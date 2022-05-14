@@ -34,5 +34,30 @@ async def roll(ctx):
         await ctx.send("Quads!")
 
 
+# Spin the wheel, choose a random name from a new line delimited text file named names.txt
+@client.command()
+async def wheel(ctx):
+    names = []
+    try:
+        with open("names.txt", "r") as f:
+            for line in f:
+                names.append(line)
+        await ctx.send(f"The wheel has chosen {random.choice(names)}")
+    except:
+        print("File not found")
+
+
+@client.command()
+async def soyball(ctx):
+    responses = []
+    try:
+        with open("responses.txt", "r") as f:
+            for line in f:
+                responses.append(line)
+        await ctx.send(random.choice(responses))
+    except TypeError:
+        print("File not found")
+
+
 load_dotenv()
 client.run(os.getenv("DISCORD_TOKEN"))
