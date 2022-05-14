@@ -1,5 +1,5 @@
-import discord, os, random
-from discord.ext import commands
+import discord, os, random, aiohttp, json
+from discord.ext import commands, tasks
 from dotenv import load_dotenv
 
 client = commands.Bot(command_prefix="!")
@@ -55,8 +55,19 @@ async def soyball(ctx):
             for line in f:
                 responses.append(line)
         await ctx.send(random.choice(responses))
-    except TypeError:
+    except:
         print("File not found")
+
+
+# @tasks.loop(hours=1)
+@client.command()
+async def randomQuote(ctx):
+    if random.randrange(1, 2) == 1:
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://zenquotes.io/api/random") as response:
+                jData = json.loads(await response.text())
+                quote = jData[0]["q"]
+                await ctx.send(quote)
 
 
 load_dotenv()
