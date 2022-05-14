@@ -57,6 +57,7 @@ async def on_message(message):
         except:
             print("File not found")
         await message.channel.send(random.choice(lines))
+    await client.process_commands(message)
 
 
 @client.command(name="source", description="Sends the link of the source code")
@@ -68,11 +69,8 @@ async def source(ctx):
     name="archive",
     description="Saves local text file of the last message the person who called the command sent",
 )
-async def archive(ctx, arg1, arg2):
-    if arg1 == "save" or arg1 == "s":
-        return 0
-    else:
-        await ctx.send("Invalid command. Usage: !archive save <filename>")
+async def archive(ctx, arg1):
+    await ctx.send("Not yet implemented")
 
 
 @tasks.loop(minutes=30)
