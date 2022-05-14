@@ -5,7 +5,9 @@ from dotenv import load_dotenv
 client = commands.Bot(command_prefix="!")
 
 # 4chan style post rolling for roll threads
-@client.command()
+@client.command(
+    name="roll", description="Rolls a 4chan like post number for roll thread images"
+)
 async def roll(ctx):
     dubs, trips, quads = False, False, False
     nums = []
@@ -35,7 +37,7 @@ async def roll(ctx):
 
 
 # Spin the wheel, choose a random name from a new line delimited text file named names.txt
-@client.command()
+@client.command(name="wheel", description="The wheel of fate")
 async def wheel(ctx):
     names = []
     try:
@@ -47,7 +49,7 @@ async def wheel(ctx):
         print("File not found")
 
 
-@client.command()
+@client.command(name="soyball", description="The 8 ball, but soy")
 async def soyball(ctx):
     responses = []
     try:
@@ -57,6 +59,11 @@ async def soyball(ctx):
         await ctx.send(random.choice(responses))
     except:
         print("File not found")
+
+
+@client.command(name="source", description="Sends the link of the source code")
+async def source(ctx):
+    await ctx.send(f"Source code: https://github.com/lutherannn/soybot")
 
 
 @tasks.loop(hours=1)
