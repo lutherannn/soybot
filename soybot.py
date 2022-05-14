@@ -1,6 +1,7 @@
-import discord, os, random, aiohttp, json
+import discord, os, random, aiohttp, json, urllib.parse, urllib.request
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
+from pastebin import PastebinAPI
 
 client = commands.Bot(command_prefix="!")
 
@@ -66,7 +67,7 @@ async def source(ctx):
     await ctx.send(f"Source code: https://github.com/lutherannn/soybot")
 
 
-@tasks.loop(hours=1)
+@tasks.loop(minutes=30)
 async def randomQuote(ctx):
     if random.randrange(1, 2) == 1:
         async with aiohttp.ClientSession() as session:
@@ -74,6 +75,24 @@ async def randomQuote(ctx):
                 jData = json.loads(await response.text())
                 quote = jData[0]["q"]
                 await ctx.send(quote)
+
+
+@client.command(
+    name="pastebin",
+    description="Uploads the selected text to pastebin, use code tags for formatting!",
+)
+async def pastebin(ctx, arg1):
+
+    PASTEBIN_URL = "http://pastebin.com/api/api_post.php"
+    pastebin_vars = dict(
+        api_dev_key=os.getenv("PASTEBIN_TOKEN"),
+        api_paste_code=arg1,
+    )
+    await ctx.send(
+        urllib.request.urlopen(
+            PASTEBIN_URL, urllib.parse.urlencode(pastebin_vars).encode("utf8")
+        ).read()
+    )
 
 
 load_dotenv()
