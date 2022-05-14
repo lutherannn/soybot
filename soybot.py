@@ -59,8 +59,7 @@ async def soyball(ctx):
         print("File not found")
 
 
-# @tasks.loop(hours=1)
-@client.command()
+@tasks.loop(hours=1)
 async def randomQuote(ctx):
     if random.randrange(1, 2) == 1:
         async with aiohttp.ClientSession() as session:
