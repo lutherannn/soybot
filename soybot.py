@@ -41,15 +41,14 @@ async def wheel(ctx):
     names = []
     try:
         with open("names.txt", "r") as f:
-            for line in f:
-                names.append(line)
-        await ctx.send(f"The wheel has chosen {random.choice(names)}")
+            line = f.readlines()
+        await ctx.send(f"The wheel has chosen {random.choice(lines)}")
     except:
         print("File not found")
 
 
 @client.event
-async def on_message(message):
+async def on_message(message, *args):
     if message.content.lower().startswith("hey soybot"):
         try:
             with open("responses.txt", "r") as f:
@@ -73,9 +72,29 @@ async def archive(ctx, arg1):
     await ctx.send("Not yet implemented")
 
 
+@client.command(name="domath", description="Performs math operations")
+async def domath(ctx, *args):
+    nums = list(args)
+    nums.remove(nums[0])
+    nums = [int(x) for x in nums]
+    if args[0] == "add" or args[0] == "a":
+        await ctx.send(sum(nums))
+    if args[0] == "subtract" or args[0] == "s":
+        await ctx.send(nums[0] - nums[1])
+    if args[0] == "multiply" or args[0] == "m":
+        for x in nums:
+            r = 1
+            for x in nums:
+                r = r * x
+        await ctx.send(r)
+    if args[0] == "divide" or args[0] == "d":
+        await ctx.send(nums[0] // nums[1])
+
+
 @tasks.loop(minutes=30)
 async def randomQuote(ctx):
-    if random.randrange(1, 2) == 1:
+    chance = random.randrange(1, 2)
+    if chance == 1:
         async with aiohttp.ClientSession() as session:
             async with session.get("https://zenquotes.io/api/random") as response:
                 jData = json.loads(await response.text())
