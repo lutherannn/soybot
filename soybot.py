@@ -38,10 +38,9 @@ async def roll(ctx):
 # Spin the wheel, choose a random name from a new line delimited text file named names.txt
 @client.command(name="wheel", description="The wheel of fate")
 async def wheel(ctx):
-    names = []
     try:
         with open("names.txt", "r") as f:
-            line = f.readlines()
+            lines = f.readlines()
         await ctx.send(f"The wheel has chosen {random.choice(lines)}")
     except:
         print("File not found")
