@@ -1,7 +1,7 @@
 import discord, os, random, aiohttp, json
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
-
+from os.path import exists
 client = commands.Bot(command_prefix="!")
 
 # 4chan style post rolling for roll threads
@@ -56,7 +56,10 @@ async def on_message(message, *args):
             print("File not found")
         await message.channel.send(random.choice(lines))
     await client.process_commands(message)
-
+    
+    if message.content.lower().startswith("cope"):
+        await message.delete()
+        await message.channel.send("https://c.tenor.com/fGAe4omlBhUAAAAS/cope-harder.gif")
 
 @client.command(name="source", description="Sends the link of the source code")
 async def source(ctx):
@@ -65,11 +68,25 @@ async def source(ctx):
 
 @client.command(
     name="archive",
-    description="Saves local text file of the last message the person who called the command sent",
+    description="Saves the last message sent, usage: !archive <filename>",
 )
 async def archive(ctx, arg1):
-    await ctx.send("Not yet implemented")
-
+    chan = client.get_channel(949158145689800747)
+    lastMsg = await chan.history(limit = 2).flatten()
+    if not exists(f"{arg1}.txt"):
+        with open(f"{arg1}.txt", "w") as f:
+            print(str(lastMsg[1].content))
+            f.write(str(lastMsg[1].content))
+            f.close()
+    else:
+        used = []
+        await ctx.send("Filename already exists")
+        cwd = os.getcwd()
+        for file in os.listdir(cwd):
+            if file.endswith(".txt"):
+                used.append(file)
+        usedF = ", ".join(used)
+        await ctx.send(f"used filenames: {usedF}")
 
 @client.command(name="domath", description="Performs math operations")
 async def domath(ctx, *args):
@@ -94,6 +111,7 @@ async def domath(ctx, *args):
 async def randomQuote(ctx):
     chance = random.randrange(1, 2)
     if chance == 1:
+        print("Quote")
         async with aiohttp.ClientSession() as session:
             async with session.get("https://zenquotes.io/api/random") as response:
                 jData = json.loads(await response.text())
