@@ -3,6 +3,7 @@ from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from os.path import exists
 from udpy import UrbanClient
+
 client = commands.Bot(command_prefix="!")
 
 # 4chan style post rolling for roll threads
@@ -122,23 +123,32 @@ async def definition(ctx, arg1):
         await ctx.send(f"{arg1} not found in dictionary")
 
 
-@client.command(name = "urban", description = "gets the definition of a word on urban dictionary")
+@client.command(
+    name="urban", description="gets the definition of a word on urban dictionary"
+)
 async def urban(ctx, arg1):
     ud = UrbanClient()
     defs = ud.get_definition(arg1)
     for d in defs:
         await ctx.send(f"Definition of word: {d}")
 
-@tasks.loop(minutes=30)
-async def randomQuote(ctx):
-    chance = random.randrange(1, 2)
-    if chance == 1:
+
+@tasks.loop(minutes=60)
+async def randomQuote():
+    chan = client.get_channel(949158145689800747)
+    if random.randrange(1, 2) == 1:
         print("Quote")
         async with aiohttp.ClientSession() as session:
             async with session.get("https://zenquotes.io/api/random") as response:
                 jData = json.loads(await response.text())
                 quote = jData[0]["q"]
-                await ctx.send(quote)
+                await chan.send(quote)
+
+
+@client.event
+async def on_ready():
+    print("connected")
+    randomQuote.start()
 
 
 load_dotenv()
