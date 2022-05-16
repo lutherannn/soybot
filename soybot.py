@@ -2,6 +2,7 @@ import discord, os, random, aiohttp, json
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from os.path import exists
+from udpy import UrbanClient
 client = commands.Bot(command_prefix="!")
 
 # 4chan style post rolling for roll threads
@@ -56,10 +57,13 @@ async def on_message(message, *args):
             print("File not found")
         await message.channel.send(random.choice(lines))
     await client.process_commands(message)
-    
+
     if message.content.lower().startswith("cope"):
         await message.delete()
-        await message.channel.send("https://c.tenor.com/fGAe4omlBhUAAAAS/cope-harder.gif")
+        await message.channel.send(
+            "https://c.tenor.com/fGAe4omlBhUAAAAS/cope-harder.gif"
+        )
+
 
 @client.command(name="source", description="Sends the link of the source code")
 async def source(ctx):
@@ -72,7 +76,7 @@ async def source(ctx):
 )
 async def archive(ctx, arg1):
     chan = client.get_channel(949158145689800747)
-    lastMsg = await chan.history(limit = 2).flatten()
+    lastMsg = await chan.history(limit=2).flatten()
     if not exists(f"{arg1}.txt"):
         with open(f"{arg1}.txt", "w") as f:
             print(str(lastMsg[1].content))
@@ -87,6 +91,7 @@ async def archive(ctx, arg1):
                 used.append(file)
         usedF = ", ".join(used)
         await ctx.send(f"used filenames: {usedF}")
+
 
 @client.command(name="domath", description="Performs math operations")
 async def domath(ctx, *args):
@@ -106,6 +111,23 @@ async def domath(ctx, *args):
     if args[0] == "divide" or args[0] == "d":
         await ctx.send(nums[0] // nums[1])
 
+
+@client.command(name="definition", description="gets the definition of a word")
+async def definition(ctx, arg1):
+    f = open("dictionary.json")
+    data = json.load(f)
+    try:
+        await ctx.send(f"Definition of {arg1}: {data[arg1.upper()]}")
+    except KeyError:
+        await ctx.send(f"{arg1} not found in dictionary")
+
+
+@client.command(name = "urban", description = "gets the definition of a word on urban dictionary")
+async def urban(ctx, arg1):
+    ud = UrbanClient()
+    defs = ud.get_definition(arg1)
+    for d in defs:
+        await ctx.send(f"Definition of word: {d}")
 
 @tasks.loop(minutes=30)
 async def randomQuote(ctx):
