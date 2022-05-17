@@ -138,6 +138,7 @@ async def urban(ctx, arg1):
     for d in defs:
         await ctx.send(f"Definition of word: {d}")
 
+
 @tasks.loop(minutes=60)
 async def randomQuote():
     chan = client.get_channel(949158145689800747)
@@ -149,29 +150,25 @@ async def randomQuote():
                 quote = jData[0]["q"]
                 await chan.send(quote)
 
-#@tasks.loop(minutes=30)
-@client.command(name = "quiz", description = "Sends a country or city and you have to give the corresponding capital city or country")
+
+# @tasks.loop(minutes=30)
+@client.command(
+    name="quiz",
+    description="Sends a country or city and you have to give the corresponding capital city or country",
+)
 async def quiz(ctx):
     with open("questions.txt") as f:
         lines = f.readlines()
         question = random.choice(lines)
-        if '"country"' in question:
-            answer = lines[lines.index(question) + 1].replace('"city": ', "")
-            question = question.replace('"country": ', "")
-            answer = answer.replace('"', "")
-            answer = answer.replace(",", "")
-            question = question.replace('"', "")
-            question = question.replace(",", "")
+        if "country" in question:
+            answer = lines[lines.index(question) + 1].replace("city ", "")
+            question = question.replace("country ", "")
             await ctx.send(f"What is the capital of: {question}")
             sleep(10)
             await ctx.send(f"Answer: {answer}")
-        if '"city"' in question:
-            answer = lines[lines.index(question) - 1].replace('"country": ', "")
-            question = question.replace('"city": ', "")
-            answer = answer.replace('"', "")
-            answer = answer.replace(",", "")
-            question = question.replace('"', "")
-            question = question.replace(",", "")
+        if "city" in question:
+            answer = lines[lines.index(question) - 1].replace("country ", "")
+            question = question.replace("city ", "")
             await ctx.send(f"Which country has the capital city of: {question}")
             sleep(10)
             await ctx.send(f"Answer: {answer}")
