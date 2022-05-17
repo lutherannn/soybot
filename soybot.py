@@ -3,6 +3,7 @@ from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from os.path import exists
 from udpy import UrbanClient
+from time import sleep
 
 client = commands.Bot(command_prefix="!")
 
@@ -59,11 +60,16 @@ async def on_message(message, *args):
         await message.channel.send(random.choice(lines))
     await client.process_commands(message)
 
-    if message.content.lower().startswith("cope"):
+    if message.content.lower().startswith("cope") and not client.user.mentioned_in(
+        message
+    ):
         await message.delete()
         await message.channel.send(
             "https://c.tenor.com/fGAe4omlBhUAAAAS/cope-harder.gif"
         )
+
+    if "cope" in message.content.lower() and client.user.mentioned_in(message):
+        await message.channel.send("Let me cope, my wife's boyfriend bullied me today")
 
 
 @client.command(name="source", description="Sends the link of the source code")
@@ -132,17 +138,42 @@ async def urban(ctx, arg1):
     for d in defs:
         await ctx.send(f"Definition of word: {d}")
 
-
 @tasks.loop(minutes=60)
 async def randomQuote():
     chan = client.get_channel(949158145689800747)
-    if random.randrange(1, 2) == 1:
+    if random.randrange(1, 4) == 1:
         print("Quote")
         async with aiohttp.ClientSession() as session:
             async with session.get("https://zenquotes.io/api/random") as response:
                 jData = json.loads(await response.text())
                 quote = jData[0]["q"]
                 await chan.send(quote)
+
+@tasks.loop(minutes=30)
+async def quiz(ctx):
+    with open("questions.txt") as f:
+        lines = f.readlines()
+        question = random.choice(lines)
+        if '"country"' in question:
+            answer = lines[lines.index(question) + 1].replace('"city": ', "")
+            question = question.replace('"country": ', "")
+            answer = answer.replace('"', "")
+            answer = answer.replace(",", "")
+            question = question.replace('"', "")
+            question = question.replace(",", "")
+            await ctx.send(f"What is the capital of: {question}")
+            sleep(10)
+            await ctx.send(f"Answer: {answer}")
+        if '"city"' in question:
+            answer = lines[lines.index(question) - 1].replace('"country": ', "")
+            question = question.replace('"city": ', "")
+            answer = answer.replace('"', "")
+            answer = answer.replace(",", "")
+            question = question.replace('"', "")
+            question = question.replace(",", "")
+            await ctx.send(f"Which country has the capital city of: {question}")
+            sleep(10)
+            await ctx.send(f"Answer: {answer}")
 
 
 @client.event
