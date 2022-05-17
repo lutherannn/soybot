@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from os.path import exists
 from udpy import UrbanClient
 from time import sleep
-
+import hastebin as hastebinapi
 client = commands.Bot(command_prefix="!")
 
 # 4chan style post rolling for roll threads
@@ -172,6 +172,12 @@ async def quiz(ctx):
             await ctx.send(f"Which country has the capital city of: {question}")
             sleep(10)
             await ctx.send(f"Answer: {answer}")
+
+@client.command(name="hastebin", description="Sends text to hastebin")
+async def hastebin(ctx,*,message):
+    postData = hastebinapi.HasteBinApi(message)
+    recData = postData.get_key()
+    await ctx.send(f"<https://www.toptal.com/developers/hastebin/{recData}>")
 
 
 @client.event
