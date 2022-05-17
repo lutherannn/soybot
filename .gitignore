@@ -1,6 +1,6 @@
 *.txt
 !requirements.txt
-!countries.txt
+!questions.txt
 .env
 test.py
 *.sh
