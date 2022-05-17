@@ -179,7 +179,6 @@ async def hastebin(ctx,*,message):
     recData = postData.get_key()
     await ctx.send(f"<https://www.toptal.com/developers/hastebin/{recData}>")
 
-
 @client.event
 async def on_ready():
     print("connected")

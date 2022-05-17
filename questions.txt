@@ -29,7 +29,7 @@ city Baku
 country Bahamas
 city Nassau
 country Bahrain
-city al-Manama
+city alManama
 country Bangladesh
 city Dhaka
 country Barbados
@@ -41,7 +41,7 @@ city Bruxelles [Brussel]
 country Belize
 city Belmopan
 country Benin
-city Porto-Novo
+city PortoNovo
 country Bermuda
 city Hamilton
 country Bhutan
@@ -161,19 +161,19 @@ city Nuuk
 country Grenada
 city Saint George's
 country Guadeloupe
-city Basse-Terre
+city BasseTerre
 country Guam
 city Aga
 country Guatemala
 city Ciudad de Guatemala
 country Guinea
 city Conakry
-country Guinea-Bissau
+country GuineaBissau
 city Bissau
 country Guyana
 city Georgetown
 country Haiti
-city Port-au-Prince
+city PortauPrince
 country Holy See (Vatican City State)
 city Citt
 country Honduras
@@ -251,13 +251,13 @@ city Bamako
 country Malta
 city Valletta
 country Marshall Islands
-city Dalap-Uliga-Darrit
+city DalapUligaDarrit
 country Martinique
-city Fort-de-France
+city FortdeFrance
 country Mauritania
 city Nouakchott
 country Mauritius
-city Port-Louis
+city PortLouis
 country Mayotte
 city Mamoutzou
 country Mexico
@@ -267,7 +267,7 @@ city Palikir
 country Moldova
 city Chisinau
 country Monaco
-city Monaco-Ville
+city MonacoVille
 country Mongolia
 city Ulan Bator
 country Montenegro
@@ -341,7 +341,7 @@ city San Juan
 country Qatar
 city Doha
 country Reunion
-city Saint-Denis
+city SaintDenis
 country Romania
 city Bucuresti
 country Russian Federation
@@ -355,7 +355,7 @@ city Basseterre
 country Saint Lucia
 city Castries
 country Saint Pierre and Miquelon
-city Saint-Pierre
+city SaintPierre
 country Saint Vincent and the Grenadines
 city Kingstown
 country Samoa
@@ -423,7 +423,7 @@ city Fakaofo
 country Tonga
 city Nuku'alofa
 country Trinidad and Tobago
-city Port-of-Spain
+city PortofSpain
 country Tunisia
 city Tunis
 country Turkey
@@ -449,24 +449,124 @@ city Montevideo
 country Uzbekistan
 city Toskent
 country Vanuatu
-city Port-Vila
+city PortVila
 country Venezuela
 city Caracas
 country Vietnam
 city Hanoi
 country Virgin Islands British
 city Road Town
-country Virgin Islands U.S.
+country Virgin Islands US
 city Charlotte Amalie
 country Wales
 city Cardiff
 country Wallis and Futuna
-city Mata-Utu
+city MataUtu
 country Western Sahara
-city El-Aai
+city ElAai
 country Yemen
 city Sanaa
 country Zambia
 city Lusaka
 country Zimbabwe
 city Harare
+country Alabama
+city Montgomery
+country Alaska
+city Juneau
+country Arizona
+city Phoenix
+country Arkansas
+city Little Rock
+country California
+city Sacramento
+country Colorado
+city Denver
+country Connecticut
+city Hartford
+country Delaware
+city Dover
+country Florida
+city Tallahassee
+country Georgia
+city Atlanta
+country Hawaii
+city Honolulu
+country Idaho
+city Boise
+country Illinois
+city Springfield
+country Indiana
+city Indianapolis
+country Iowa
+city Des Moines
+country Kansas
+city Topeka
+country Kentucky
+city Frankfort
+country Louisiana
+city Baton Rouge
+country Maine
+city Augusta
+country Maryland
+city Annapolis
+country Massachusetts
+city Boston
+country Michigan
+city Lansing
+country Minnesota
+city Saint Paul
+country Mississippi
+city Jackson
+country Missouri
+city Jefferson City
+country Montana
+city Helana
+country Nebraska
+city Lincoln
+country Nevada
+city Carson City
+country New Hampshire
+city Concord
+country New Jersey
+city Trenton
+country New Mexico
+city SantaFe
+country New York
+city Albany
+country North Carolina
+city Raleigh
+country North Dakota
+city Bismarck
+country Ohio
+city Columbus
+country Oklahoma
+city Oklahoma City
+country Oregon
+city Salem
+country Pennsylvania
+city Harrisburg
+country Rhode Island
+city Providence
+country South Carolina
+city Columbia
+country South Dakota
+city Pierre
+country Tennessee
+city Nashville
+country Texas
+city Austin
+country Utah
+city Salt Lake City
+country Vermont
+city Montpelier
+country Virginia
+city Richmond
+country Washington
+city Olympia
+country West Virginia
+city Charleston
+country Wisconsin
+city Madison
+country Wyoming
+city Cheyenne
