@@ -149,7 +149,8 @@ async def randomQuote():
                 quote = jData[0]["q"]
                 await chan.send(quote)
 
-@tasks.loop(minutes=30)
+#@tasks.loop(minutes=30)
+@client.command(name = "quiz", description = "Sends a country or city and you have to give the corresponding capital city or country")
 async def quiz(ctx):
     with open("questions.txt") as f:
         lines = f.readlines()
