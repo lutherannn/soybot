@@ -3,4 +3,5 @@
 !questions.txt
 .env
 test.py
+./test
 *.sh

@@ -142,8 +142,8 @@ async def urban(ctx, arg1):
 @tasks.loop(minutes=60)
 async def randomQuote():
     chan = client.get_channel(949158145689800747)
-    if random.randrange(1, 4) == 1:
-        print("Quote")
+    chance = random.randrange(1, 4)
+    if chance == 1:
         async with aiohttp.ClientSession() as session:
             async with session.get("https://zenquotes.io/api/random") as response:
                 jData = json.loads(await response.text())
