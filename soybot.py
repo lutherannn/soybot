@@ -170,7 +170,10 @@ async def quiz(ctx):
         if "city" in question:
             answer = lines[lines.index(question) - 1].replace("country ", "")
             question = question.replace("city ", "")
-            await ctx.send(f"Which country has the capital city of: {question}")
+            if lines.index(question - 1) > 472:
+                await ctx.send(f"Which state has the capital city of: {question}")
+            else:
+                await ctx.send(f"Which country has the capital city of {question}")
             sleep(10)
             await ctx.send(f"Answer: {answer}")
 
