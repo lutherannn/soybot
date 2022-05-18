@@ -83,7 +83,7 @@ async def source(ctx):
     description="Saves the last message sent, usage: !archive <filename>",
 )
 async def archive(ctx, arg1):
-    chan = client.get_channel(949158145689800747)
+    chan = client.get_channel(os.getenv("QUOTE_CHAN"))
     lastMsg = await chan.history(limit=2).flatten()
     if not exists(f"{arg1}.txt"):
         with open(f"{arg1}.txt", "w") as f:
@@ -142,7 +142,7 @@ async def urban(ctx, arg1):
 
 @tasks.loop(minutes=60)
 async def randomQuote():
-    chan = client.get_channel(949158145689800747)
+    chan = client.get_channel(os.getenv("QUOTE_CHAN"))
     chance = random.randrange(1, 4)
     if chance == 1:
         async with aiohttp.ClientSession() as session:
@@ -170,10 +170,7 @@ async def quiz(ctx):
         if "city" in question:
             answer = lines[lines.index(question) - 1].replace("country ", "")
             question = question.replace("city ", "")
-            if lines.index(question - 1) > 472:
-                await ctx.send(f"Which state has the capital city of: {question}")
-            else:
-                await ctx.send(f"Which country has the capital city of {question}")
+            await ctx.send(f"Which country/state has the capital city of: {question}")
             sleep(10)
             await ctx.send(f"Answer: {answer}")
 

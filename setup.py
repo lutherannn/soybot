@@ -10,6 +10,8 @@ if not os.path.isfile(".env"):
         with open(".env", "w") as f:
             discordKey = input("Discord API Key: ")
             f.write(f"DISCORD_TOKEN={discordKey}")
+            chanID = input("Main channel ID: ")
+            f.write(f"QUOTE_CHAN={chanID}")
             f.close()
     except FileNotFoundError:
         print("File not Found\n")
