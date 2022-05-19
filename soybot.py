@@ -59,7 +59,6 @@ async def on_message(message, *args):
         except:
             print("File not found")
         await message.channel.send(random.choice(lines))
-    await client.process_commands(message)
 
     if message.content.lower().startswith("cope") and not client.user.mentioned_in(
         message
@@ -72,10 +71,12 @@ async def on_message(message, *args):
     if "cope" in message.content.lower() and client.user.mentioned_in(message):
         await message.channel.send("Let me cope, my wife's boyfriend bullied me today")
 
+    await client.process_commands(message)
+
 
 @client.command(name="source", description="Sends the link of the source code")
 async def source(ctx):
-    await ctx.send(f"Source code: https://github.com/lutherannn/soybot")
+    await ctx.send("Source code: https://github.com/lutherannn/soybot")
 
 
 @client.command(
@@ -175,17 +176,33 @@ async def quiz(ctx):
             await ctx.send(f"Answer: {answer}")
 
 
+@client.command(name="mquiz", description="Math quiz")
+async def mquiz(ctx):
+    ops = ["+", "-", "*"]
+    num1, num2 = random.randrange(1, 100), random.randrange(1, 100)
+    operator = random.choice(ops)
+    await ctx.send(f"What is: {num1} {operator} {num2}")
+    if operator == "+":
+        answer = num1 + num2
+    if operator == "-":
+        answer = num1 - num2
+    if operator == "*":
+        answer = num1 * num2
+    sleep(5)
+    await ctx.send(f"Solution: {answer}")
+
+
 @client.command(name="hastebin", description="Sends text to hastebin")
 async def hastebin(ctx, *, message):
     postData = hastebinapi.HasteBinApi(message)
-    recData = postData.get_key()
-    await ctx.send(f"<https://www.toptal.com/developers/hastebin/{recData}>")
+    await ctx.send(f"<https://www.toptal.com/developers/hastebin/{postData.getKey()}>")
 
 
 @client.event
 async def on_ready():
     print("connected")
     randomQuote.start()
+    print(os.getenv("QUOTE_CHAN"))
 
 
 load_dotenv()
