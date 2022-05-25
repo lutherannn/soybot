@@ -5,6 +5,7 @@ from os.path import exists
 from udpy import UrbanClient
 from time import sleep
 import hastebin as hastebinapi
+import datetime
 
 client = commands.Bot(command_prefix="!")
 
@@ -84,7 +85,7 @@ async def source(ctx):
     description="Saves the last message sent, usage: !archive <filename>",
 )
 async def archive(ctx, arg1):
-    chan = client.get_channel(os.getenv("QUOTE_CHAN"))
+    chan = client.get_channel(int(os.getenv("QUOTE_CHAN")))
     lastMsg = await chan.history(limit=2).flatten()
     if not exists(f"{arg1}.txt"):
         with open(f"{arg1}.txt", "w") as f:
@@ -143,7 +144,7 @@ async def urban(ctx, arg1):
 
 @tasks.loop(minutes=60)
 async def randomQuote():
-    chan = client.get_channel(os.getenv("QUOTE_CHAN"))
+    chan = client.get_channel(int(os.getenv("QUOTE_CHAN")))
     chance = random.randrange(1, 4)
     if chance == 1:
         async with aiohttp.ClientSession() as session:
@@ -182,6 +183,8 @@ async def mquiz(ctx):
     num1, num2 = random.randrange(1, 100), random.randrange(1, 100)
     operator = random.choice(ops)
     await ctx.send(f"What is: {num1} {operator} {num2}")
+    if num1 == 69 or num2 == 69:
+        await ctx.send("Funny sex number lmao")
     if operator == "+":
         answer = num1 + num2
     if operator == "-":
@@ -198,11 +201,19 @@ async def hastebin(ctx, *, message):
     await ctx.send(f"<https://www.toptal.com/developers/hastebin/{postData.getKey()}>")
 
 
+@client.command(name="uptime", description="Sends the uptime of the bot")
+async def uptime(ctx):
+    global ts
+    await ctx.send(f"Probably up since: {ts}")
+
+
 @client.event
 async def on_ready():
+    global ts
     print("connected")
     randomQuote.start()
     print(os.getenv("QUOTE_CHAN"))
+    ts = datetime.datetime.now()
 
 
 load_dotenv()
