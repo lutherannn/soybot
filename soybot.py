@@ -212,7 +212,6 @@ async def on_ready():
     global ts
     print("connected")
     randomQuote.start()
-    print(os.getenv("QUOTE_CHAN"))
     ts = datetime.datetime.now()
 
 
