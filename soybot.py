@@ -84,23 +84,39 @@ async def source(ctx):
     name="archive",
     description="Saves the last message sent, usage: !archive <filename>",
 )
-async def archive(ctx, arg1):
+async def archive(ctx, arg1, arg2):
     chan = client.get_channel(int(os.getenv("QUOTE_CHAN")))
     lastMsg = await chan.history(limit=2).flatten()
-    if not exists(f"{arg1}.txt"):
-        with open(f"{arg1}.txt", "w") as f:
-            print(str(lastMsg[1].content))
-            f.write(str(lastMsg[1].content))
-            f.close()
+    used = []
+    cwd = os.getcwd()
+    for file in os.listdir(cwd):
+        if file.endswith(".txt"):
+            used.append(file)
+    usedF = ", ".join(used)
+    if arg1 == "load" or arg1 == "lo":
+        try:
+            with open(f"{arg2}.txt") as f:
+                content = f.readlines()
+                await ctx.send(" ".join(content))
+                f.close()
+        except FileNotFoundError:
+            await ctx.send("Filename not found.")
+            await ctx.send(f"Used filenames: {usedF}")
+    if arg1 == "save" or arg1 == "s":
+        if not exists(f"{arg2}.txt"):
+            with open(f"{arg2}.txt", "w") as f:
+                f.write(str(lastMsg[1].content))
+                f.close()
+                await ctx.send(f"File saved as: {arg2}.txt")
+        else:
+            await ctx.send("Filename already exists")
+            await ctx.send(f"Used filenames: {usedF}")
+    if arg1 == "list" or arg1 == "li":
+        await ctx.send(f"Used filenames: {usedF}")
     else:
-        used = []
-        await ctx.send("Filename already exists")
-        cwd = os.getcwd()
-        for file in os.listdir(cwd):
-            if file.endswith(".txt"):
-                used.append(file)
-        usedF = ", ".join(used)
-        await ctx.send(f"used filenames: {usedF}")
+        await ctx.send(
+            "Invalid usage. Correct usage: !archive <(s)ave>/<(lo)ad>/<(li)st> <filename>"
+        )
 
 
 @client.command(name="domath", description="Performs math operations")
