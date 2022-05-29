@@ -1,14 +1,13 @@
-import discord, os, random, aiohttp, json
+import discord, os, random, aiohttp, json, datetime
+import hastebin as hastebinapi
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from os.path import exists
 from udpy import UrbanClient
 from time import sleep
-import hastebin as hastebinapi
-import datetime
 
 client = commands.Bot(command_prefix="!")
-
+load_dotenv()
 # 4chan style post rolling for roll threads
 @client.command(
     name="roll", description="Rolls a 4chan like post number for roll thread images"
@@ -223,6 +222,11 @@ async def uptime(ctx):
     await ctx.send(f"Probably up since: {ts}")
 
 
+@client.command(name="bible", description="Sends the specified Bible verse")
+async def bible(ctx, arg1):
+    await ctx.send("TODO")
+
+
 @client.event
 async def on_ready():
     global ts
@@ -231,5 +235,4 @@ async def on_ready():
     ts = datetime.datetime.now()
 
 
-load_dotenv()
 client.run(os.getenv("DISCORD_TOKEN"))

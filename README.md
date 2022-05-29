@@ -1,7 +1,6 @@
 # soybot
 SoyBot, the lackluster, featureless, discord bot.
 # Library Requirements
-discord-py, aiohttp, dotenv, udpy<br>
 Install required packages with pip:
 	pip install -r requirements.txt
 # Also Needed
