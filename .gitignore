@@ -5,4 +5,5 @@
 test.py
 ./test
 *.sh
+*.quote
 __pycache__

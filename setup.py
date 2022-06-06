@@ -46,3 +46,12 @@ else:
     print(
         "Either edit the names.txt file on your own, or delete it and run the setup again to automatically add it"
     )
+
+quoteChoice = input(
+    "Have a chance of sending an inspirational quote every hour (y/n)? "
+)
+if quoteChoice == "y" or quoteChoice == "yes":
+    open(".quote", "x")
+    print(".quote file created, soybot will send quotes")
+else:
+    print(".quote file not created, soybot will not send quotes")

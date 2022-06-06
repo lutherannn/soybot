@@ -51,8 +51,10 @@ async def wheel(ctx):
 
 
 @client.event
-async def on_message(message, *args):
-    if message.content.lower().startswith("hey soybot"):
+async def on_message(message):
+    if message.content.lower().startswith(
+        "hey soybot"
+    ) and not message.content.lower().startswith("hey soybot choose"):
         try:
             with open("responses.txt", "r") as f:
                 lines = f.readlines()
@@ -63,7 +65,6 @@ async def on_message(message, *args):
     if message.content.lower().startswith("cope") and not client.user.mentioned_in(
         message
     ):
-        await message.delete()
         await message.channel.send(
             "https://c.tenor.com/fGAe4omlBhUAAAAS/cope-harder.gif"
         )
@@ -159,12 +160,13 @@ async def urban(ctx, arg1):
 
 @tasks.loop(minutes=60)
 async def randomQuote():
-    chan = client.get_channel(int(os.getenv("QUOTE_CHAN")))
-    chance = random.randrange(1, 4)
-    if chance == 1:
-        async with aiohttp.ClientSession() as session:
-            async with session.get("https://zenquotes.io/api/random") as response:
-                jData = json.loads(await response.text())
+    if os.path.exists(".quote"):
+        chan = client.get_channel(int(os.getenv("QUOTE_CHAN")))
+        chance = random.randrange(1, 4)
+        if chance == 1:
+            async with aiohttp.ClientSession() as session:
+                async with session.get("https://zenquotes.io/api/random") as response:
+                    jData = json.loads(await response.text())
                 quote = jData[0]["q"]
                 await chan.send(quote)
 
