@@ -229,6 +229,12 @@ async def bible(ctx, arg1):
     await ctx.send("TODO")
 
 
+@client.command(name="choose", description="Chooses a random item from the given list")
+async def choose(ctx, *, options):
+    choices = [x for x in options.split()]
+    await ctx.send(random.choice(choices))
+
+
 @client.event
 async def on_ready():
     global ts
