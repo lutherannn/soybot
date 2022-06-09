@@ -45,6 +45,7 @@ async def wheel(ctx):
     try:
         with open("names.txt", "r") as f:
             lines = f.readlines()
+            f.close()
         await ctx.send(f"The wheel has chosen {random.choice(lines)}")
     except:
         print("File not found")
@@ -231,8 +232,7 @@ async def bible(ctx, arg1):
 
 @client.command(name="choose", description="Chooses a random item from the given list")
 async def choose(ctx, *, options):
-    choices = [x for x in options.split()]
-    await ctx.send(random.choice(choices))
+    await ctx.send(random.choice([x for x in options.split()]))
 
 
 @client.event
