@@ -73,6 +73,9 @@ async def on_message(message):
     if "cope" in message.content.lower() and client.user.mentioned_in(message):
         await message.channel.send("Let me cope, my wife's boyfriend bullied me today")
 
+    if "O-H" in message.content:
+        await message.channel.send("I-O")
+
     await client.process_commands(message)
 
 
@@ -172,7 +175,6 @@ async def randomQuote():
                 await chan.send(quote)
 
 
-# @tasks.loop(minutes=30)
 @client.command(
     name="quiz",
     description="Sends a country or city and you have to give the corresponding capital city or country",
@@ -232,7 +234,10 @@ async def bible(ctx, arg1):
 
 @client.command(name="choose", description="Chooses a random item from the given list")
 async def choose(ctx, *, options):
-    await ctx.send(random.choice([x for x in options.split()]))
+    r = [x for x in options.split()]
+    await ctx.send(random.choice(r)) if len(r) > 1 else await ctx.send(
+        "Choice requires more than one option."
+    )
 
 
 @client.event
