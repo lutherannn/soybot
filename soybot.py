@@ -73,8 +73,19 @@ async def on_message(message):
     if "cope" in message.content.lower() and client.user.mentioned_in(message):
         await message.channel.send("Let me cope, my wife's boyfriend bullied me today")
 
-    if "O-H" in message.content:
+    if message.content.startswith("O-H"):
         await message.channel.send("I-O")
+    
+    if message.content.startswith("RAIDER"):
+        await message.channel.send("POWER")
+    
+    if message.attachments:
+        for x in message.attachments:
+            f = await message.attachments[message.attachments.index(x)].to_file()
+            f.filename = "image.png"
+            e = discord.Embed()
+            e.set_image(url="attachment://image.png")
+            await message.channel.send(file=f, embed=e)
 
     await client.process_commands(message)
 
@@ -150,7 +161,7 @@ async def definition(ctx, arg1):
         await ctx.send(f"Definition of {arg1}: {data[arg1.upper()]}")
     except KeyError:
         await ctx.send(f"{arg1} not found in dictionary")
-
+    f.close()
 
 @client.command(
     name="urban", description="gets the definition of a word on urban dictionary"
