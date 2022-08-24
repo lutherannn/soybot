@@ -1,4 +1,5 @@
-import os, requests
+import os
+import requests
 print("Ensure soybot is not running before running the updater...")
 print("Press any key to continue...")
 os.system("pause" if os.name == "nt" else "read")
@@ -25,4 +26,7 @@ os.remove("setup.py")
 if not os.path.exists("setup.py"):
     os.rename("setup.tmp", "setup.py")
 
-print("Done.")
+lchoice = input("Done. Relaunch soybot? y/n: ")
+if lchoice == "y" or lchoice == "yes":
+    os.system("python soybot.py")
+os.system("exit")

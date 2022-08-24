@@ -11,8 +11,12 @@ from os.path import exists
 from udpy import UrbanClient
 from time import sleep
 
+# Set command prefix
 client = commands.Bot(command_prefix="!")
+
+# Load the .env contents
 load_dotenv()
+
 # 4chan style post rolling for roll threads
 
 
@@ -93,6 +97,8 @@ async def on_message(message):
 async def source(ctx):
     await ctx.send("Source code: https://github.com/lutherannn/soybot")
 
+# Archives last message sent to local disc
+
 
 @client.command(
     name="archive",
@@ -132,6 +138,8 @@ async def archive(ctx, arg1, arg2):
             "Invalid usage. Correct usage: !archive <(s)ave>/<(lo)ad>/<(li)st> <filename>"
         )
 
+# Does math
+
 
 @client.command(name="domath", description="Performs math operations")
 async def domath(ctx, *args):
@@ -151,6 +159,8 @@ async def domath(ctx, *args):
     if args[0] == "divide" or args[0] == "d":
         await ctx.send(nums[0] // nums[1])
 
+# Gets definition of word from local dictionary
+
 
 @client.command(name="definition", description="gets the definition of a word")
 async def definition(ctx, arg1):
@@ -161,6 +171,8 @@ async def definition(ctx, arg1):
     except KeyError:
         await ctx.send(f"{arg1} not found in dictionary")
     f.close()
+
+# Gets definition of word from urban dictionary
 
 
 @client.command(
@@ -185,6 +197,8 @@ async def randomQuote():
                 quote = jData[0]["q"]
                 await chan.send(quote)
 
+# Country/State capital & vice versa quiz
+
 
 @client.command(
     name="quiz",
@@ -207,6 +221,8 @@ async def quiz(ctx):
             sleep(10)
             await ctx.send(f"Answer: {answer}")
 
+# Math quiz
+
 
 @client.command(name="mquiz", description="Math quiz")
 async def mquiz(ctx):
@@ -225,11 +241,15 @@ async def mquiz(ctx):
     sleep(5)
     await ctx.send(f"Solution: {answer}")
 
+# Uploads message contents to hastebin
+
 
 @client.command(name="hastebin", description="Sends text to hastebin")
 async def hastebin(ctx, *, message):
     postData = hastebinapi.HasteBinApi(message)
     await ctx.send(f"<https://www.toptal.com/developers/hastebin/{postData.getKey()}>")
+
+# Sends uptime of bot
 
 
 @client.command(name="uptime", description="Sends the uptime of the bot")
@@ -238,9 +258,7 @@ async def uptime(ctx):
     await ctx.send(f"Probably up since: {ts}")
 
 
-@client.command(name="bible", description="Sends the specified Bible verse")
-async def bible(ctx, arg1):
-    await ctx.send("TODO")
+# Picks random item from user sent list
 
 
 @client.command(name="choose", description="Chooses a random item from the given list")
@@ -251,6 +269,9 @@ async def choose(ctx, *, options):
     )
 
 
+# Starts pre-requirements such as time stamp and the random quote event if used
+
+
 @client.event
 async def on_ready():
     global ts
@@ -258,5 +279,5 @@ async def on_ready():
     randomQuote.start()
     ts = datetime.datetime.now()
 
-
+# Starts the bot
 client.run(os.getenv("DISCORD_TOKEN"))

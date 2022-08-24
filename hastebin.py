@@ -1,3 +1,4 @@
+# Credit to: https://github.com/Unna000/Hastebin-API/blob/master/hastebin.py
 import requests
 import json
 
