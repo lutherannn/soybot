@@ -1,4 +1,9 @@
-import discord, os, random, aiohttp, json, datetime
+import discord
+import os
+import random
+import aiohttp
+import json
+import datetime
 import hastebin as hastebinapi
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
@@ -9,6 +14,8 @@ from time import sleep
 client = commands.Bot(command_prefix="!")
 load_dotenv()
 # 4chan style post rolling for roll threads
+
+
 @client.command(
     name="roll", description="Rolls a 4chan like post number for roll thread images"
 )
@@ -75,17 +82,9 @@ async def on_message(message):
 
     if message.content.startswith("O-H"):
         await message.channel.send("I-O")
-    
+
     if message.content.startswith("RAIDER"):
         await message.channel.send("POWER")
-    
-    if message.attachments:
-        for x in message.attachments:
-            f = await message.attachments[message.attachments.index(x)].to_file()
-            f.filename = "image.png"
-            e = discord.Embed()
-            e.set_image(url="attachment://image.png")
-            await message.channel.send(file=f, embed=e)
 
     await client.process_commands(message)
 
@@ -162,6 +161,7 @@ async def definition(ctx, arg1):
     except KeyError:
         await ctx.send(f"{arg1} not found in dictionary")
     f.close()
+
 
 @client.command(
     name="urban", description="gets the definition of a word on urban dictionary"

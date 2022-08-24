@@ -10,6 +10,7 @@ if not os.path.isfile(".env"):
         with open(".env", "w") as f:
             discordKey = input("Discord API Key: ")
             f.write(f"DISCORD_TOKEN={discordKey}")
+            f.write("\n")
             chanID = input("Main channel ID: ")
             f.write(f"QUOTE_CHAN={chanID}")
             f.close()
@@ -55,3 +56,5 @@ if quoteChoice == "y" or quoteChoice == "yes":
     print(".quote file created, soybot will send quotes")
 else:
     print(".quote file not created, soybot will not send quotes")
+
+os.system("pause" if os.name == "nt" else "read")
