@@ -4,13 +4,14 @@ import random
 import aiohttp
 import json
 import datetime
+import requests
 import hastebin as hastebinapi
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from os.path import exists
 from udpy import UrbanClient
 from time import sleep
-
+from math import floor
 # Set command prefix
 client = commands.Bot(command_prefix="!")
 
@@ -267,6 +268,22 @@ async def choose(ctx, *, options):
     await ctx.send(random.choice(r)) if len(r) > 1 else await ctx.send(
         "Choice requires more than one option."
     )
+
+
+@client.command(name="weather", description="Prints the weather of the specified city")
+async def weather(ctx, *, message):
+    url = "http://api.openweathermap.org/data/2.5/weather?appid=" + os.getenv("TEST") + "&q=" + message
+    resp = requests.get(url)
+    cont = resp.json()
+    
+
+    if cont["cod"] != "404":
+        weatherData = cont["main"]
+        temp = weatherData["temp"]
+        temp = floor((temp - 273.15) * 1.8 + 32)
+        await ctx.send(f"Temperature in {message.title()}: {str(temp)}")
+    else:
+        await ctx.send("City not found, or openweathermap is down")
 
 
 # Starts pre-requirements such as time stamp and the random quote event if used
