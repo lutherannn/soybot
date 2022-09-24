@@ -12,6 +12,7 @@ from os.path import exists
 from udpy import UrbanClient
 from time import sleep
 from math import floor
+
 # Set command prefix
 client = commands.Bot(command_prefix="!")
 
@@ -91,12 +92,16 @@ async def on_message(message):
     if message.content.startswith("RAIDER"):
         await message.channel.send("POWER")
 
+    if message.content.startswith("BILLS"):
+        await message.channel.send("MAFIA")
+
     await client.process_commands(message)
 
 
 @client.command(name="source", description="Sends the link of the source code")
 async def source(ctx):
     await ctx.send("Source code: https://github.com/lutherannn/soybot")
+
 
 # Archives last message sent to local disc
 
@@ -139,6 +144,7 @@ async def archive(ctx, arg1, arg2):
             "Invalid usage. Correct usage: !archive <(s)ave>/<(lo)ad>/<(li)st> <filename>"
         )
 
+
 # Does math
 
 
@@ -160,6 +166,7 @@ async def domath(ctx, *args):
     if args[0] == "divide" or args[0] == "d":
         await ctx.send(nums[0] // nums[1])
 
+
 # Gets definition of word from local dictionary
 
 
@@ -172,6 +179,7 @@ async def definition(ctx, arg1):
     except KeyError:
         await ctx.send(f"{arg1} not found in dictionary")
     f.close()
+
 
 # Gets definition of word from urban dictionary
 
@@ -198,6 +206,7 @@ async def randomQuote():
                 quote = jData[0]["q"]
                 await chan.send(quote)
 
+
 # Country/State capital & vice versa quiz
 
 
@@ -222,6 +231,7 @@ async def quiz(ctx):
             sleep(10)
             await ctx.send(f"Answer: {answer}")
 
+
 # Math quiz
 
 
@@ -242,6 +252,7 @@ async def mquiz(ctx):
     sleep(5)
     await ctx.send(f"Solution: {answer}")
 
+
 # Uploads message contents to hastebin
 
 
@@ -249,6 +260,7 @@ async def mquiz(ctx):
 async def hastebin(ctx, *, message):
     postData = hastebinapi.HasteBinApi(message)
     await ctx.send(f"<https://www.toptal.com/developers/hastebin/{postData.getKey()}>")
+
 
 # Sends uptime of bot
 
@@ -272,10 +284,14 @@ async def choose(ctx, *, options):
 
 @client.command(name="weather", description="Prints the weather of the specified city")
 async def weather(ctx, *, message):
-    url = "http://api.openweathermap.org/data/2.5/weather?appid=" + os.getenv("TEST") + "&q=" + message
+    url = (
+        "http://api.openweathermap.org/data/2.5/weather?appid="
+        + os.getenv("TEST")
+        + "&q="
+        + message
+    )
     resp = requests.get(url)
     cont = resp.json()
-    
 
     if cont["cod"] != "404":
         weatherData = cont["main"]
@@ -295,6 +311,7 @@ async def on_ready():
     print("connected")
     randomQuote.start()
     ts = datetime.datetime.now()
+
 
 # Starts the bot
 client.run(os.getenv("DISCORD_TOKEN"))
