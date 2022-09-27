@@ -282,6 +282,7 @@ async def choose(ctx, *, options):
     )
 
 
+# Sends the wearher of a given city
 @client.command(name="weather", description="Prints the weather of the specified city")
 async def weather(ctx, *, message):
     url = (
@@ -302,9 +303,48 @@ async def weather(ctx, *, message):
         await ctx.send("City not found, or openweathermap is down")
 
 
+# Plays a game of russian roulette
 @client.command(name="soyroulette", description="Plays a game of russian roulette.")
 async def soyroulette(ctx):
-    await ctx.send("BANG!" if random.randrage(1, 6) == 6 else "Click.")
+    await ctx.send("BANG!" if random.randrange(1, 6) == 6 else "Click.")
+
+
+# Plays a game of rock paper scissors
+@client.command(name="rps", description="Plays a game of rock paper scissors")
+async def rps(ctx, userChoice):
+    choices = ["Rock", "Paper", "Scissors"]
+    validChoice = False
+    userWin = False
+    cpuWin = False
+    tie = False
+    userChoice = userChoice.title()
+    if userChoice not in choices:
+        await ctx.send("You did not enter a correct choice.")
+    else:
+        validChoice = True
+    if validChoice:
+        cpuChoice = random.choice(choices)
+        if userChoice == choices[0] and cpuChoice == choices[2]:
+            userWin = True
+        if userChoice == choices[1] and cpuChoice == choices[0]:
+            userWin = True
+        if userChoice == choices[2] and cpuChoice == choices[1]:
+            userWin = True
+        if cpuChoice == choices[0] and userChoice == choices[2]:
+            cpuWin = True
+        if cpuChoice == choices[1] and userChoice == choices[0]:
+            cpuWin = True
+        if cpuChoice == choices[2] and userChoice == choices[1]:
+            cpuWin = True
+        if userChoice == cpuChoice:
+            tie = True
+
+        if cpuWin and not tie:
+            await ctx.send(f"I chose {cpuChoice}, I win!")
+        if userWin and not tie:
+            await ctx.send(f"I chose {cpuChoice}, you win, incel.")
+        if tie:
+            await ctx.send(f"We both chose {cpuChoice}, we tied.")
 
 
 # Starts pre-requirements such as time stamp and the random quote event if used
