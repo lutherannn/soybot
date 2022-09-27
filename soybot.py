@@ -302,6 +302,11 @@ async def weather(ctx, *, message):
         await ctx.send("City not found, or openweathermap is down")
 
 
+@client.command(name="soyroulette", description="Plays a game of russian roulette.")
+async def soyroulette(ctx):
+    await ctx.send("BANG!" if random.randrage(1, 6) == 6 else "Click.")
+
+
 # Starts pre-requirements such as time stamp and the random quote event if used
 
 
