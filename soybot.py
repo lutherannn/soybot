@@ -306,7 +306,7 @@ async def weather(ctx, *, message):
 # Plays a game of russian roulette
 @client.command(name="soyroulette", description="Plays a game of russian roulette.")
 async def soyroulette(ctx):
-    await ctx.send("BANG!" if random.randrange(1, 6) == 6 else "Click.")
+    await ctx.send("BANG!" if random.randrange(0, 7) == 6 else "Click.")
 
 
 # Plays a game of rock paper scissors
