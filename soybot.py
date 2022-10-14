@@ -190,7 +190,7 @@ async def definition(ctx, arg1):
 async def urban(ctx, arg1):
     ud = UrbanClient()
     defs = ud.get_definition(arg1)
-        await ctx.send(f"Definition of {arg1}: {defs[0]}")
+    await ctx.send(f"Definition of {defs[0]}")
 
 
 @tasks.loop(minutes=60)
