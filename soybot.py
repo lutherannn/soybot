@@ -346,6 +346,12 @@ async def rps(ctx, userChoice):
             await ctx.send(f"We both chose {cpuChoice}, we tied.")
 
 
+@client.command(name="em", description="Calls an emergency meeting")
+async def em(ctx):
+    await ctx.send("@everyone")
+    await ctx.send("Emergency meeting")
+    await ctx.send("https://tenor.com/bpitK.gif")
+
 # Starts pre-requirements such as time stamp and the random quote event if used
 
 
