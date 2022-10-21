@@ -275,7 +275,7 @@ async def uptime(ctx):
 
 @client.command(name="choose", description="Chooses a random item from the given list")
 async def choose(ctx, *, options):
-    r = [x for x in options.split()]
+    r = [x for x in options.split(",")]
     await ctx.send(random.choice(r)) if len(r) > 1 else await ctx.send(
         "Choice requires more than one option."
     )
