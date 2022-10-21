@@ -51,6 +51,10 @@ async def roll(ctx):
     if quads:
         await ctx.send("Quads!")
 
+@client.command(name = "roll20", description="Rolls a d20")
+async def roll20(ctx):
+    r = random.randrange(0, 21)
+    await ctx.send("Nat 20!" if r == 20 else r)
 
 # Spin the wheel, choose a random name from a new line delimited text file named names.txt
 @client.command(name="wheel", description="The wheel of fate")
