@@ -51,10 +51,12 @@ async def roll(ctx):
     if quads:
         await ctx.send("Quads!")
 
-@client.command(name = "roll20", description="Rolls a d20")
+
+@client.command(name="roll20", description="Rolls a d20")
 async def roll20(ctx):
     r = random.randrange(0, 21)
     await ctx.send("Nat 20!" if r == 20 else r)
+
 
 # Spin the wheel, choose a random name from a new line delimited text file named names.txt
 @client.command(name="wheel", description="The wheel of fate")
@@ -311,7 +313,9 @@ async def weather(ctx, *, message):
 async def soyroulette(ctx):
     loc = random.randrange(0, 7)
     await ctx.send("BANG!" if loc == 6 else "Click.")
-    await ctx.send(f"You were {abs(loc - 6)} clicks away from death." if loc != 6 else "")
+    await ctx.send(
+        f"You were {abs(loc - 6)} clicks away from death." if loc != 6 else ""
+    )
 
 
 # Plays a game of rock paper scissors
@@ -352,11 +356,35 @@ async def rps(ctx, userChoice):
             await ctx.send(f"We both chose {cpuChoice}, we tied.")
 
 
+# Calls an emergency meeting
 @client.command(name="em", description="Calls an emergency meeting")
 async def em(ctx):
-    await ctx.send("@everyone")
-    await ctx.send("Emergency meeting")
+    await ctx.send("@everyone Emergency meeting")
     await ctx.send("https://tenor.com/bpitK.gif")
+
+
+# Sends METAR of an airport
+@client.command(name="metar", description="Returns the metar of a given airport")
+async def metar(ctx, arg1):
+    chars = "[]'"
+    metarKey = os.getenv("METAR_KEY")
+    metarUrl = f"https://api.checkwx.com/metar/{str(arg1.upper())}?x-api-key={metarKey}"
+
+    req = requests.get(metarUrl)
+
+    try:
+        req.raise_for_status()
+        resp = json.loads(req.text)
+    except requests.exceptions.HTTPError as e:
+        print(e)
+
+    result = str(resp["data"])
+
+    for x in chars:
+        result = result.replace(x, "")
+
+    await ctx.send(result)
+
 
 # Starts pre-requirements such as time stamp and the random quote event if used
 
