@@ -12,6 +12,11 @@ from os.path import exists
 from udpy import UrbanClient
 from time import sleep
 from math import floor
+from modules import roll as mroll
+from modules import roll20 as mroll20
+from modules import wheel as mwheel
+from modules import domath as mdomath
+from modules import definition as mdefinition
 
 # Set command prefix
 client = commands.Bot(command_prefix="!")
@@ -26,48 +31,19 @@ load_dotenv()
     name="roll", description="Rolls a 4chan like post number for roll thread images"
 )
 async def roll(ctx):
-    dubs, trips, quads = False, False, False
-    nums = ""
-    for _ in range(10):
-        nums += str(random.randrange(0, 9))
-    await ctx.send(nums)
-
-    if nums[-1] == nums[-2]:
-        dubs = True
-    if nums[-1] == nums[-2] and nums[-1] == nums[-3]:
-        trips = True
-    if nums[-1] == nums[-2] and nums[-1] == nums[-3] and nums[-1] == nums[-4]:
-        quads = True
-
-    if dubs and trips:
-        dubs = False
-    if quads and trips:
-        trips = False
-
-    if dubs:
-        await ctx.send("Dubs!")
-    if trips:
-        await ctx.send("Trips!")
-    if quads:
-        await ctx.send("Quads!")
+    await ctx.send(mroll.roll())
 
 
 @client.command(name="roll20", description="Rolls a d20")
 async def roll20(ctx):
-    r = random.randrange(0, 21)
-    await ctx.send("Nat 20!" if r == 20 else r)
+    n = mroll20.roll20()
+    await ctx.send("Nat 20!" if n == 20 else n)
 
 
 # Spin the wheel, choose a random name from a new line delimited text file named names.txt
 @client.command(name="wheel", description="The wheel of fate")
 async def wheel(ctx):
-    try:
-        with open("names.txt", "r") as f:
-            lines = f.readlines()
-            f.close()
-        await ctx.send(f"The wheel has chosen {random.choice(lines)}")
-    except:
-        print("File not found")
+    await ctx.send(mwheel.wheel())
 
 
 @client.event
@@ -109,68 +85,12 @@ async def source(ctx):
     await ctx.send("Source code: https://github.com/lutherannn/soybot")
 
 
-# Archives last message sent to local disc
-
-
-@client.command(
-    name="archive",
-    description="Saves the last message sent, usage: !archive <filename>",
-)
-async def archive(ctx, arg1, arg2):
-    chan = client.get_channel(int(os.getenv("QUOTE_CHAN")))
-    lastMsg = await chan.history(limit=2).flatten()
-    used = []
-    cwd = os.getcwd()
-    for file in os.listdir(cwd):
-        if file.endswith(".txt"):
-            used.append(file)
-    usedF = ", ".join(used)
-    if arg1 == "load" or arg1 == "lo":
-        try:
-            with open(f"{arg2}.txt") as f:
-                content = f.readlines()
-                await ctx.send(" ".join(content))
-                f.close()
-        except FileNotFoundError:
-            await ctx.send("Filename not found.")
-            await ctx.send(f"Used filenames: {usedF}")
-    if arg1 == "save" or arg1 == "s":
-        if not exists(f"{arg2}.txt"):
-            with open(f"{arg2}.txt", "w") as f:
-                f.write(str(lastMsg[1].content))
-                f.close()
-                await ctx.send(f"File saved as: {arg2}.txt")
-        else:
-            await ctx.send("Filename already exists")
-            await ctx.send(f"Used filenames: {usedF}")
-    if arg1 == "list" or arg1 == "li":
-        await ctx.send(f"Used filenames: {usedF}")
-    else:
-        await ctx.send(
-            "Invalid usage. Correct usage: !archive <(s)ave>/<(lo)ad>/<(li)st> <filename>"
-        )
-
-
 # Does math
 
 
 @client.command(name="domath", description="Performs math operations")
 async def domath(ctx, *args):
-    nums = list(args)
-    nums.remove(nums[0])
-    nums = [int(x) for x in nums]
-    if args[0] == "add" or args[0] == "a":
-        await ctx.send(sum(nums))
-    if args[0] == "subtract" or args[0] == "s":
-        await ctx.send(nums[0] - nums[1])
-    if args[0] == "multiply" or args[0] == "m":
-        for x in nums:
-            r = 1
-            for x in nums:
-                r = r * x
-        await ctx.send(r)
-    if args[0] == "divide" or args[0] == "d":
-        await ctx.send(nums[0] // nums[1])
+    await ctx.send(mdomath.domath(*args))
 
 
 # Gets definition of word from local dictionary
@@ -178,13 +98,7 @@ async def domath(ctx, *args):
 
 @client.command(name="definition", description="gets the definition of a word")
 async def definition(ctx, arg1):
-    f = open("dictionary.json")
-    data = json.load(f)
-    try:
-        await ctx.send(f"Definition of {arg1}: {data[arg1.upper()]}")
-    except KeyError:
-        await ctx.send(f"{arg1} not found in dictionary")
-    f.close()
+    await ctx.send(mdefinition.definition(arg1))
 
 
 # Gets definition of word from urban dictionary
