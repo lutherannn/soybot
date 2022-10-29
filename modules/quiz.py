@@ -1,4 +1,3 @@
-from time import sleep
 import random
 
 
@@ -11,13 +10,11 @@ def quiz():
             answer = lines[lines.index(question) + 1].replace("city ", "")
             question = question.replace("country ", "")
             qa.append(f"What is the capital of: {question}")
-            sleep(10)
             qa.append(f"Answer: {answer}")
         if "city" in question:
             answer = lines[lines.index(question) - 1].replace("country ", "")
             question = question.replace("city ", "")
             qa.append(f"Which country/state has the capital city of: {question}")
-            sleep(10)
             qa.append(f"Answer: {answer}")
     f.close()
     return qa

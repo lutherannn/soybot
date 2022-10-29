@@ -13,6 +13,5 @@ def mquiz():
         answer = num1 - num2
     if operator == "*":
         answer = num1 * num2
-    sleep(5)
     qa.append(f"Solution: {answer}")
     return qa

@@ -20,6 +20,8 @@ from modules import urban as murban
 from modules import quiz as mquiz
 from modules import mquiz as mmquiz
 from modules import rps as mrps
+from modules import weather as mweather
+from modules import metar as mmetar
 
 # Set command prefix
 client = commands.Bot(command_prefix="!")
@@ -171,22 +173,7 @@ async def choose(ctx, *, options):
 # Sends the wearher of a given city
 @client.command(name="weather", description="Prints the weather of the specified city")
 async def weather(ctx, *, message):
-    url = (
-        "http://api.openweathermap.org/data/2.5/weather?appid="
-        + os.getenv("TEST")
-        + "&q="
-        + message
-    )
-    resp = requests.get(url)
-    cont = resp.json()
-
-    if cont["cod"] != "404":
-        weatherData = cont["main"]
-        temp = weatherData["temp"]
-        temp = floor((temp - 273.15) * 1.8 + 32)
-        await ctx.send(f"Temperature in {message.title()}: {str(temp)}")
-    else:
-        await ctx.send("City not found, or openweathermap is down")
+    await ctx.send(mweather.weather(message))
 
 
 # Plays a game of russian roulette
@@ -215,24 +202,7 @@ async def em(ctx):
 # Sends METAR of an airport
 @client.command(name="metar", description="Returns the metar of a given airport")
 async def metar(ctx, arg1):
-    chars = "[]'"
-    metarKey = os.getenv("METAR_KEY")
-    metarUrl = f"https://api.checkwx.com/metar/{str(arg1.upper())}?x-api-key={metarKey}"
-
-    req = requests.get(metarUrl)
-
-    try:
-        req.raise_for_status()
-        resp = json.loads(req.text)
-    except requests.exceptions.HTTPError as e:
-        print(e)
-
-    result = str(resp["data"])
-
-    for x in chars:
-        result = result.replace(x, "")
-
-    await ctx.send(result)
+    await ctx.send(mmetar.metar(arg1))
 
 
 @tasks.loop(minutes=60)
