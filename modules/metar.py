@@ -1,7 +1,9 @@
 import requests
+import os
+import json
 
 
-def metar(ctx, arg1):
+def metar(arg1):
     chars = "[]'"
     metarKey = os.getenv("METAR_KEY")
     metarUrl = f"https://api.checkwx.com/metar/{str(arg1.upper())}?x-api-key={metarKey}"
