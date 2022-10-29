@@ -9,7 +9,6 @@ import hastebin as hastebinapi
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from os.path import exists
-from udpy import UrbanClient
 from time import sleep
 from math import floor
 from modules import roll as mroll
@@ -17,6 +16,10 @@ from modules import roll20 as mroll20
 from modules import wheel as mwheel
 from modules import domath as mdomath
 from modules import definition as mdefinition
+from modules import urban as murban
+from modules import quiz as mquiz
+from modules import mquiz as mmquiz
+from modules import rps as mrps
 
 # Set command prefix
 client = commands.Bot(command_prefix="!")
@@ -108,22 +111,7 @@ async def definition(ctx, arg1):
     name="urban", description="gets the definition of a word on urban dictionary"
 )
 async def urban(ctx, arg1):
-    ud = UrbanClient()
-    defs = ud.get_definition(arg1)
-    await ctx.send(f"Definition of {defs[0]}")
-
-
-@tasks.loop(minutes=60)
-async def randomQuote():
-    if os.path.exists(".quote"):
-        chan = client.get_channel(int(os.getenv("QUOTE_CHAN")))
-        chance = random.randrange(1, 4)
-        if chance == 1:
-            async with aiohttp.ClientSession() as session:
-                async with session.get("https://zenquotes.io/api/random") as response:
-                    jData = json.loads(await response.text())
-                quote = jData[0]["q"]
-                await chan.send(quote)
+    await ctx.send(murban.urban(arg1))
 
 
 # Country/State capital & vice versa quiz
@@ -134,21 +122,10 @@ async def randomQuote():
     description="Sends a country or city and you have to give the corresponding capital city or country",
 )
 async def quiz(ctx):
-    with open("questions.txt") as f:
-        lines = f.readlines()
-        question = random.choice(lines)
-        if "country" in question:
-            answer = lines[lines.index(question) + 1].replace("city ", "")
-            question = question.replace("country ", "")
-            await ctx.send(f"What is the capital of: {question}")
-            sleep(10)
-            await ctx.send(f"Answer: {answer}")
-        if "city" in question:
-            answer = lines[lines.index(question) - 1].replace("country ", "")
-            question = question.replace("city ", "")
-            await ctx.send(f"Which country/state has the capital city of: {question}")
-            sleep(10)
-            await ctx.send(f"Answer: {answer}")
+    qa = mquiz.quiz()
+    await ctx.send(qa[0])
+    sleep(10)
+    await ctx.send(qa[1])
 
 
 # Math quiz
@@ -156,20 +133,10 @@ async def quiz(ctx):
 
 @client.command(name="mquiz", description="Math quiz")
 async def mquiz(ctx):
-    ops = ["+", "-", "*"]
-    num1, num2 = random.randrange(1, 100), random.randrange(1, 100)
-    operator = random.choice(ops)
-    await ctx.send(f"What is: {num1} {operator} {num2}")
-    if num1 == 69 or num2 == 69:
-        await ctx.send("Funny sex number lmao")
-    if operator == "+":
-        answer = num1 + num2
-    if operator == "-":
-        answer = num1 - num2
-    if operator == "*":
-        answer = num1 * num2
-    sleep(5)
-    await ctx.send(f"Solution: {answer}")
+    qa = mmquiz.mquiz()
+    await ctx.send(qa[0])
+    sleep(10)
+    await ctx.send(qa[1])
 
 
 # Uploads message contents to hastebin
@@ -235,39 +202,7 @@ async def soyroulette(ctx):
 # Plays a game of rock paper scissors
 @client.command(name="rps", description="Plays a game of rock paper scissors")
 async def rps(ctx, userChoice):
-    choices = ["Rock", "Paper", "Scissors"]
-    validChoice = False
-    userWin = False
-    cpuWin = False
-    tie = False
-    userChoice = userChoice.title()
-    if userChoice not in choices:
-        await ctx.send("You did not enter a correct choice.")
-    else:
-        validChoice = True
-    if validChoice:
-        cpuChoice = random.choice(choices)
-        if userChoice == choices[0] and cpuChoice == choices[2]:
-            userWin = True
-        if userChoice == choices[1] and cpuChoice == choices[0]:
-            userWin = True
-        if userChoice == choices[2] and cpuChoice == choices[1]:
-            userWin = True
-        if cpuChoice == choices[0] and userChoice == choices[2]:
-            cpuWin = True
-        if cpuChoice == choices[1] and userChoice == choices[0]:
-            cpuWin = True
-        if cpuChoice == choices[2] and userChoice == choices[1]:
-            cpuWin = True
-        if userChoice == cpuChoice:
-            tie = True
-
-        if cpuWin and not tie:
-            await ctx.send(f"I chose {cpuChoice}, I win!")
-        if userWin and not tie:
-            await ctx.send(f"I chose {cpuChoice}, you win, incel.")
-        if tie:
-            await ctx.send(f"We both chose {cpuChoice}, we tied.")
+    await ctx.send(mrps.rps(userChoice))
 
 
 # Calls an emergency meeting
@@ -298,6 +233,19 @@ async def metar(ctx, arg1):
         result = result.replace(x, "")
 
     await ctx.send(result)
+
+
+@tasks.loop(minutes=60)
+async def randomQuote():
+    if os.path.exists(".quote"):
+        chan = client.get_channel(int(os.getenv("QUOTE_CHAN")))
+        chance = random.randrange(1, 4)
+        if chance == 1:
+            async with aiohttp.ClientSession() as session:
+                async with session.get("https://zenquotes.io/api/random") as response:
+                    jData = json.loads(await response.text())
+                quote = jData[0]["q"]
+                await chan.send(quote)
 
 
 # Starts pre-requirements such as time stamp and the random quote event if used
