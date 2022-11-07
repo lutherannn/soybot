@@ -112,7 +112,7 @@ async def definition(ctx, arg1):
 @client.command(
     name="urban", description="gets the definition of a word on urban dictionary"
 )
-async def urban(ctx, arg1):
+async def urban(ctx, *, arg1):
     await ctx.send(murban.urban(arg1))
 
 
