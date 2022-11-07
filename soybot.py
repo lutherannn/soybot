@@ -17,7 +17,7 @@ from modules import wheel as mwheel
 from modules import domath as mdomath
 from modules import definition as mdefinition
 from modules import urban as murban
-from modules import quiz as mquiz
+from modules import quiz as cquiz
 from modules import mquiz as mmquiz
 from modules import rps as mrps
 from modules import weather as mweather
@@ -53,9 +53,7 @@ async def wheel(ctx):
 
 @client.event
 async def on_message(message):
-    if message.content.lower().startswith(
-        "hey soybot"
-    ) and not message.content.lower().startswith("hey soybot choose"):
+    if message.content.lower().startswith("hey soybot"):
         try:
             with open("responses.txt", "r") as f:
                 lines = f.readlines()
@@ -124,7 +122,7 @@ async def urban(ctx, *, arg1):
     description="Sends a country or city and you have to give the corresponding capital city or country",
 )
 async def quiz(ctx):
-    qa = mquiz.quiz()
+    qa = cquiz.quiz()
     await ctx.send(qa[0])
     sleep(10)
     await ctx.send(qa[1])
