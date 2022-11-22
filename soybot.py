@@ -80,19 +80,6 @@ async def on_message(message):
     if message.content.startswith("BILLS"):
         await message.channel.send("MAFIA")
 
-    if "m" in message.content or "M" in message.content and not message.author.bot:
-        newMsg = message.content
-        print(newMsg)
-        while "m" in newMsg or "M" in newMsg:
-            newMsg = newMsg.replace("m", "\*")
-            newMsg = newMsg.replace("M", "\*")
-            print(newMsg)
-        await message.channel.send(
-            "Please refrain fro\* using that letter this week, Go Bucs!"
-        )
-        if "m" not in newMsg and "M" not in newMsg:
-            await message.channel.send("Your \*essage should read: " + newMsg)
-        # print(message.author.bot)
     await client.process_commands(message)
 
 
