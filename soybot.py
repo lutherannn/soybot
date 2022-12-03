@@ -203,6 +203,14 @@ async def metar(ctx, arg1):
     await ctx.send(mmetar.metar(arg1))
 
 
+@client.command(
+    name="jam", decription="Sends a random song from a list of spotify track links"
+)
+async def jam(ctx):
+    with open("songs.txt", "r") as f:
+        await ctx.send(random.choice(f.readlines()))
+
+
 @tasks.loop(minutes=60)
 async def randomQuote():
     if os.path.exists(".quote"):
