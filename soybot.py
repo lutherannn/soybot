@@ -206,9 +206,22 @@ async def metar(ctx, arg1):
 @client.command(
     name="jam", decription="Sends a random song from a list of spotify track links"
 )
-async def jam(ctx):
-    with open("songs.txt", "r") as f:
-        await ctx.send(random.choice(f.readlines()))
+async def jam(ctx, *args):
+    if (
+        len(args) == 2
+        and args[0].lower() == "load"
+        and "https://open.spotify.com/track/" in args[1]
+    ):
+        with open("songs.txt", "a+") as f:
+            f.write("\n" + str(args[1]))
+            f.close()
+    else:
+        with open("songs.txt", "r") as f:
+            # instead of checking for dupes when you load a song into the list, we'll just convert it to a set and back lmfao
+            # this does mean the file can get pretty large, but fuck it
+            cringe = set(f.readlines())
+            cringe = list(cringe)
+            await ctx.send(random.choice(cringe))
 
 
 @tasks.loop(minutes=60)
