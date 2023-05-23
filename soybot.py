@@ -223,6 +223,24 @@ async def jam(ctx, *args):
             cringe = list(cringe)
             await ctx.send(random.choice(cringe))
 
+@client.command(name="iam", description="sets your role to a range of days for tracking days since your last... whatever you want", pass_context=True)
+async def iam(ctx, arg1):
+    member = ctx.message.author
+    if arg1 == "1-7":
+        role = discord.utils.get(member.guild.roles, name="Day 1-7")
+        await member.add_roles(role)
+    if arg1 == "8-14":
+        role = discord.utils.get(member.guild.roles, name = "Day 8-14")
+        await member.add_roles(role)
+    if arg1 == "15-21":
+        role = discord.utils.get(member.guild.roles, name="Day 15-21")
+        await member.add_roles(role)
+    if arg1 == "22-60":
+        role = discord.utils.get(member.guild.roles, name = "Day 22-60")
+        await member.add_roles(role)
+    if arg1 == "61+":
+        role = discord.utils.get(member.guild.roles, name = "61+")
+        await member.add_roles(role)
 
 @tasks.loop(minutes=60)
 async def randomQuote():
