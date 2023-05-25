@@ -227,20 +227,31 @@ async def jam(ctx, *args):
 async def iam(ctx, arg1):
     member = ctx.message.author
     if arg1 == "1-7":
-        role = discord.utils.get(member.guild.roles, name="Day 1-7")
-        await member.add_roles(role)
+        role = discord.utils.get(member.guild.roles, name= "Day 1-7")
     if arg1 == "8-14":
         role = discord.utils.get(member.guild.roles, name = "Day 8-14")
-        await member.add_roles(role)
     if arg1 == "15-21":
-        role = discord.utils.get(member.guild.roles, name="Day 15-21")
-        await member.add_roles(role)
+        role = discord.utils.get(member.guild.roles, name = "Day 15-21")
     if arg1 == "22-60":
         role = discord.utils.get(member.guild.roles, name = "Day 22-60")
-        await member.add_roles(role)
     if arg1 == "61+":
         role = discord.utils.get(member.guild.roles, name = "61+")
-        await member.add_roles(role)
+    await member.add_roles(role)
+
+@client.command(name="iamn", description="removes the role set from the iam command", pass_context = True)
+async def iamn(ctx, arg1):
+    member = ctx.message.author
+    if arg1 == "1-7":
+        role = discord.utils.get(member.guild.roles, name = "Day 1-7")
+    if arg1 == "8-14":
+        role = discord.utils.get(member.guild.roles, name = "Day 8-14")
+    if arg1 == "15-21":
+        role = discord.utils.get(member.guild.roles, name = "Day 15-21")
+    if arg1 == "22-60":
+        role = discord.utils.get(member.guild.roles, name = "Day 22-60")
+    if arg1 == "61+":
+        role = discord.utils.get(member.guild.roles, name = "Day 61+")
+    await member.remove_roles(role)
 
 @tasks.loop(minutes=60)
 async def randomQuote():
