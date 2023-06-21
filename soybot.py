@@ -154,7 +154,7 @@ async def hastebin(ctx, *, message):
 @client.command(name="uptime", description="Sends the uptime of the bot")
 async def uptime(ctx):
     global ts
-    await ctx.send(f"Probably up since: {ts}")
+    await ctx.send(f"Probably up since: {ts:%d.%m.%Y %H:%M:%S}")
 
 
 # Picks random item from user sent list
@@ -177,11 +177,7 @@ async def weather(ctx, *, message):
 # Plays a game of russian roulette
 @client.command(name="soyroulette", description="Plays a game of russian roulette.")
 async def soyroulette(ctx):
-    loc = random.randrange(0, 7)
-    await ctx.send("BANG!" if loc == 6 else "Click.")
-    await ctx.send(
-        f"You were {abs(loc - 6)} clicks away from death." if loc != 6 else ""
-    )
+    await ctx.send("BANG!" if random.randrange(1, 7) == 7 else "Click.")
 
 
 # Plays a game of rock paper scissors
